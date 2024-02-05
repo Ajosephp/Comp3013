@@ -3,12 +3,18 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { uppercase } from "../../helpers/stringHelpers";
 import { useState } from "react";
 
-export function Header() {
+
+// Each Header is expecting input of type string which returns void
+interface HeaderProps {
+  addAssignment: (title: string) => void;
+}
+
+export function Header( {addAssignment}:HeaderProps ) {
   const [input, setInput] = useState(''); // Default for the Input
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    console.log("User entered: ", input)
+    addAssignment(input);
     setInput(''); // Set back to blank input
   }
   
