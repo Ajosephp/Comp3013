@@ -10,8 +10,9 @@ interface HeaderProps {
 }
 
 export function Header( {addAssignment}:HeaderProps ) {
-  const [input, setInput] = useState(''); // Default for the Input
 
+  const [input, setInput] = useState(''); // Default for the Input
+  
   const handleSubmit = (e:any) => {
     e.preventDefault();
     addAssignment(input);

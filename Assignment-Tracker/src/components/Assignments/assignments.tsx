@@ -3,8 +3,13 @@ import styles from "./assignments.module.css";
 import { IAssignment } from "../../App";
 
 
-export function Assignments( 
-  { assignments, deleteAssignment }: { assignments: IAssignment[], deleteAssignment: (id: number) => void }) {
+export function Assignments( { assignments, deleteAssignment, toggleCompletion }:
+  { assignments: IAssignment[],
+    deleteAssignment: (id: number) => void,
+    toggleCompletion: (id: number) => void }) {
+      
+      const isCompleteCount = assignments.filter(assignment => assignment.isCompleted).length;
+
   return (
     <section className={styles.assignments}>
       <header className={styles.header}>
@@ -15,7 +20,7 @@ export function Assignments(
 
         <div>
           <p className={styles.textPurple}>Completed Assignments</p>
-          <span>1 of {assignments.length}</span>
+          <span>{isCompleteCount} of {assignments.length}</span>
         </div>
       </header>
 
@@ -25,7 +30,9 @@ export function Assignments(
           key={assignment.id}
            id={assignment.id}
             title={assignment.title}
-             deleteAssignment={deleteAssignment} />
+             deleteAssignment={deleteAssignment}
+             toggleCompletion={toggleCompletion}
+             isCompleted={assignment.isCompleted} />
         )}
       </div>
     </section>
