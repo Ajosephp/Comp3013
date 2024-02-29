@@ -19,9 +19,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <>
       <AuthenticationForm onFormSubmit={onLogin} authLoading={authLoading} />
-    </div>
+    </ >
   );
 };
 

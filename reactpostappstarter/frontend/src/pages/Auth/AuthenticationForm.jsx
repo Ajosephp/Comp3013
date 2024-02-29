@@ -23,7 +23,6 @@ export function AuthenticationForm( { onFormSubmit, authLoading } ) {
 
   return (
     <Container size={420} my={40}>
-      <form onSubmit={handleSubmit}>
       <Title ta="center" className={classes.title}>
         Welcome back!
       </Title>
@@ -34,7 +33,7 @@ export function AuthenticationForm( { onFormSubmit, authLoading } ) {
         </Anchor>
       </Text>
 
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+      <Paper component="form" onSubmit={handleSubmit} withBorder shadow="md" p={30} mt={30} radius="md">
         <TextInput label="Email" placeholder="you@mantine.dev" name="email" required />
         <PasswordInput label="Password" placeholder="Your password" name="password" required mt="md" />
         <Group justify="space-between" mt="lg">
@@ -47,7 +46,6 @@ export function AuthenticationForm( { onFormSubmit, authLoading } ) {
           Sign in
         </Button>
       </Paper>
-      </form>
     </Container>
   );
 }

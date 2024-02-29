@@ -23,10 +23,10 @@ export const Router = () => {
    * CLIENT-SIDE ROUTER
    *
    * [Public Pages]: Anyone can see these pages
-   * / - Landing Page
-   *
-   * [Private Routes]: Must be authenticated to see
+   * /      - Landing Page
    * /login - Login Page
+  *
+  * [Private Routes]: Must be authenticated to see
    * /posts - See All Posts
    * /posts/:id - See details of a specific post
    * /posts/create - Create a post
