@@ -5,9 +5,9 @@ import classes from './Layout.module.css';
 
 const Layout = () => {
   return (
-    <div>
+    <div className={classes.layoutContainer}>
       <Navbar />
-      <main>
+      <main className={classes.mainContent}>
         <Outlet />
       </main>
       <FooterSimple />
@@ -16,6 +16,3 @@ const Layout = () => {
 };
 
 export default Layout;
-
-// className={classes.mainContent}
-// className={classes.layoutContainer}
