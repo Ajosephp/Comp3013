@@ -52,7 +52,7 @@ const Landing = () => {
       <Grid style={{ marginTop: theme.spacing.md }}>
         {featureHighlights.map((feature, index) => (
           <Grid.Col span={mobile ? 12 : "auto"} key={index}>
-            <Paper shadow="xs" p="xl">
+            <Paper shadow="xl" radius="md" withBorder p="xl">
               <Text>{feature}</Text>
             </Paper>
           </Grid.Col>
@@ -64,13 +64,15 @@ const Landing = () => {
       <Grid style={{ marginTop: theme.spacing.md }}>
 
         <Grid.Col span={mobile ? 12 : "auto"}>
-          <Carousel withIndicators height={450}>
-            {slides}
-          </Carousel>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <Carousel withIndicators height={450}>
+              {slides}
+            </Carousel>
+          </Paper>
         </Grid.Col>
 
         <Grid.Col span={mobile ? 12 : "auto"}>
-          <Paper shadow="xs" p="xl">
+          <Paper shadow="xl" radius="md" withBorder p="xl">
             <Text>
             Embark on your photography adventure now! Join our community and start sharing your unique vision with the world.
             </Text>
