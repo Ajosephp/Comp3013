@@ -1,6 +1,8 @@
 import express from "express";
+import { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
 import {
   findUserById,
   IDecodedUser,
@@ -10,6 +12,14 @@ import {
   posts,
   sleep,
 } from "./fakedb";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IDecodedUser;
+    }
+  }
+}
 
 const port = 8085;
 const app = express();
@@ -90,9 +100,27 @@ app.get("/api/posts/:id", (request, response) => {
  *     What if you make a request to this route with a valid token but
  *     with an empty/incorrect payload (post)
  */
-app.post("/api/posts", (req, res) => {
+const authenticate = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = parseToken(req.headers.authorization, res);
+    const decodedUser = jwt.verify(token, "secret") as IDecodedUser;
+    const user = findUserById(decodedUser.id);
+
+    // Add the user information to the request object
+    req.user = user;
+    next(); // Pass control to the next middleware function
+  } catch (error) {
+    res.status(401).json({ error: "Authentication failed" });
+  }
+};
+
+app.post("/api/posts", authenticate, (req, res) => {
+  if (!req.user) {
+    return res.status(403).json({ error: "User must be logged in." });
+  }
   const incomingPost = req.body;
-  addPost(incomingPost);
+  const userIdFromToken = req.user.id;
+  addPost(incomingPost, userIdFromToken);
   res.status(200).json({ success: true });
 });
 

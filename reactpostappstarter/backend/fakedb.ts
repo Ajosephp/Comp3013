@@ -31,18 +31,21 @@ export const posts = [
   },
 ];
 
-export const addPost = (post: any) => {
+export const addPost = (post: any, userIdFromToken: any) => {
   //  Issues:
   //  *     The request body contains the title, category, and image,
   //  *     but the addPost function needs to add a unique id
   //  *     and the id of the currently logged in user to the post.
-  post.id = 3;
-  post.userId = 2;
-  posts.push(post);
+  const newId = Math.max(...posts.map((post) => post.id)) + 1;
+  const newPost = {
+    ...post,
+    id: newId,
+    userId: userIdFromToken,
+  };
+
+  posts.push(newPost);
+  console.log(newPost);
 };
-// length of post array + 1
-// userId potentially tied to token.
-// Where is the token that is tied to axios
 
 export const verifyUser = (email: string, password: string) => {
   const user = users.find((user) => {
