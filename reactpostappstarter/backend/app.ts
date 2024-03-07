@@ -48,10 +48,36 @@ app.get("/api/posts", async (req, res) => {
 });
 
 // ⭐️ TODO: Implement this yourself
-app.get("/api/posts/:id", (req, res) => {
-  const id = req.params.id;
-  // The line below should be fixed.
-  res.json(posts[0]);
+app.get("/api/posts/:id", (request, response) => {
+  const id = request.params.id;
+
+  // Find post by ID
+  const post = posts.find((post) => post.id === parseInt(id));
+  console.log(post);
+
+  if (!post) {
+    return response.status(404).json({ error: "Post not found" });
+  }
+
+  // Add author name by truncating email
+  const user = findUserById(post.userId);
+  console.log(user);
+
+  if (!user) {
+    return response.status(404).json({ error: "User not found" });
+  }
+
+  const authorName = user.email.substring(0, user.email.indexOf("@"));
+
+  // Return the detailed post
+  return response.json({
+    id: post.id,
+    title: post.title,
+    category: post.category,
+    content: post.content,
+    image: post.image,
+    author: authorName,
+  });
 });
 
 /**

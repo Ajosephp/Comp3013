@@ -40,6 +40,9 @@ export const addPost = (post: any) => {
   post.userId = 2;
   posts.push(post);
 };
+// length of post array + 1
+// userId potentially tied to token.
+// Where is the token that is tied to axios
 
 export const verifyUser = (email: string, password: string) => {
   const user = users.find((user) => {
