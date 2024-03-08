@@ -1,6 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DOMAIN from "../../services/endpoint";
 import axios from "axios";
+import useBoundStore from '../../store/Store'; // Adjust the import path as necessary
+
 import {
   Button,
   Container,
@@ -19,13 +21,17 @@ function PostDetailsPage() {
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
 
   const [post, setPost] = useState(null); // Initialize state to null indicating no data initially
-  const { id } = useParams();
+  const { id } = useParams(); // id of the post
+  const navigate = useNavigate();
+
+  // Access user and authentication status
+  const user = useBoundStore(state => state.user );
 
   useEffect(() => {
     const fetchPostDetails = async () => {
       try {
         const response = await axios.get(`${DOMAIN}/api/posts/${id}`);
-        console.log(response.data);
+        console.log("Fetched post details:", response.data); // Log fetched post
         setPost(response.data); // Update the state with the fetched data
       } catch (error) {
         console.error("Error fetching post details:", error);
@@ -50,7 +56,7 @@ function PostDetailsPage() {
                   <Title order={4} size="1.25rem">
                     Author
                   </Title>
-                  <Text size="md">{post.author}</Text>
+                  <Text size="md">{post.authorName}</Text>
                 </Paper>
                 <Paper shadow="xl" radius="md" withBorder p="xl">
                   <Title order={4} size="1.25rem">
@@ -87,6 +93,15 @@ function PostDetailsPage() {
               </Paper>
             </Grid.Col>
           </Grid>
+          
+          {user && user.id === post.userId && (
+          <Button 
+            style={{ marginTop: theme.spacing.md }} 
+            onClick={() => navigate(`/posts/edit/${post.id}`)}
+          >
+            Edit
+          </Button>
+        )}
 
           <Divider my="xl" />
 

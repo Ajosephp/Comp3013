@@ -23,6 +23,3 @@ export const postsLoader = async () => {
   return res.data;
 };
 
-// axios making a phonecall
-// await is pausing until we get a response - relatively new keyword
-// have to mark the function with async to use the ( await ) keyword

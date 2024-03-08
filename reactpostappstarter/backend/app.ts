@@ -2,7 +2,6 @@ import express from "express";
 import { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import { JwtPayload } from "jsonwebtoken";
 import {
   findUserById,
   IDecodedUser,
@@ -63,7 +62,6 @@ app.get("/api/posts/:id", (request, response) => {
 
   // Find post by ID
   const post = posts.find((post) => post.id === parseInt(id));
-  console.log(post);
 
   if (!post) {
     return response.status(404).json({ error: "Post not found" });
@@ -71,7 +69,6 @@ app.get("/api/posts/:id", (request, response) => {
 
   // Add author name by truncating email
   const user = findUserById(post.userId);
-  console.log(user);
 
   if (!user) {
     return response.status(404).json({ error: "User not found" });
@@ -81,12 +78,9 @@ app.get("/api/posts/:id", (request, response) => {
 
   // Return the detailed post
   return response.json({
-    id: post.id,
-    title: post.title,
-    category: post.category,
-    content: post.content,
-    image: post.image,
-    author: authorName,
+    ...post,
+    authorName, // For display
+    userId: post.userId // Include if needed for logic but keep hidden on the frontend
   });
 });
 
@@ -122,6 +116,19 @@ app.post("/api/posts", authenticate, (req, res) => {
   const userIdFromToken = req.user.id;
   addPost(incomingPost, userIdFromToken);
   res.status(200).json({ success: true });
+});
+
+app.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedPostData = req.body; // This contains the updated post data from the form
+
+  const postIndex = posts.findIndex(post => post.id === parseInt(id));
+  if (postIndex === -1) {
+    return res.status(404).send({ success: false, message: "Post not found" });
+  }
+  
+  posts[postIndex] = { ...posts[postIndex], ...updatedPostData };
+  res.send({ success: true, post: posts[postIndex] });
 });
 
 app.listen(port, () => console.log("Server is running"));
