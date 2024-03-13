@@ -53,6 +53,8 @@ app.post("/api/user/validation", (req, res) => {
 
 app.get("/api/posts", async (req, res) => {
   // Sleep delay goes here
+  await sleep(1000);
+  console.log("Sleeping for 1 second");
   res.json(posts);
 });
 
@@ -80,7 +82,7 @@ app.get("/api/posts/:id", (request, response) => {
   return response.json({
     ...post,
     authorName, // For display
-    userId: post.userId // Include if needed for logic but keep hidden on the frontend
+    userId: post.userId, // Include if needed for logic but keep hidden on the frontend
   });
 });
 
@@ -122,11 +124,11 @@ app.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const updatedPostData = req.body; // This contains the updated post data from the form
 
-  const postIndex = posts.findIndex(post => post.id === parseInt(id));
+  const postIndex = posts.findIndex((post) => post.id === parseInt(id));
   if (postIndex === -1) {
     return res.status(404).send({ success: false, message: "Post not found" });
   }
-  
+
   posts[postIndex] = { ...posts[postIndex], ...updatedPostData };
   res.send({ success: true, post: posts[postIndex] });
 });

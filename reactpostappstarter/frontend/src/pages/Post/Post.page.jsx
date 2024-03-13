@@ -22,4 +22,3 @@ export const postsLoader = async () => {
   console.log("I ran!");
   return res.data;
 };
-
