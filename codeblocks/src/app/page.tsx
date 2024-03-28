@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function Admin() {
+export default async function Home() {
   const userId = cookies().get("user_id")?.value;
   if (!userId) {
     redirect("/login");
@@ -13,8 +13,7 @@ export default async function Admin() {
       userId: Number(userId),
     },
   });
-
-  const blocksList = blocks.map((block) => (
+  const renderedBlocks = blocks.map((block) => (
     <Link
       key={block.id}
       href={`/blocks/${block.id}`}
@@ -24,7 +23,6 @@ export default async function Admin() {
       <div>View</div>
     </Link>
   ));
-
   return (
     <div>
       <div className="flex m-2 justify-between items-center">
@@ -33,7 +31,7 @@ export default async function Admin() {
           New
         </Link>
       </div>
-      <div className="flex flex-col gap-2">{blocksList}</div>
+      <div className="flex flex-col gap-2">{renderedBlocks}</div>
     </div>
   );
 }
